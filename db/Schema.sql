@@ -26,16 +26,13 @@ CREATE TABLE `charRev` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `charid` int,
   `revid` int,
-  `value` int,
-  foreign key (charid) references characteristics(id),
-  foreign key (revid) references reviews(review_id)
+  `value` int
 );
 
 CREATE TABLE `photos` (
   `photo_id` int PRIMARY KEY AUTO_INCREMENT,
   `review_id` int,
-  `url` text,
-  foreign key (review_id) references reviews(review_id)
+  `url` text
 );
 
 
