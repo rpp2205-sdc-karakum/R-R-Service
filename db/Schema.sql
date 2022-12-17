@@ -22,6 +22,7 @@ CREATE TABLE `reviews` (
   `helpfullness` int
 );
 
+
 CREATE TABLE `charRev` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `charid` int,

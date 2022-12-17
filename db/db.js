@@ -38,10 +38,36 @@ GROUP BY characteristics.product_id
 `)
 }
 const reviewID = async (input) => {
-  return connection.promise().query(`select * from reviews where reviews.product_id = ${input}`)
+  return connection.promise().query(`SELECT *,
+  (
+    SELECT COALESCE(GROUP_CONCAT(photos.url), '[]')
+  FROM photos
+  WHERE photos.review_id = reviews.review_id
+  )
+  AS photos
+  FROM reviews
+  WHERE reviews.product_id = ${input};
+  `
+  )
 }
+
+const revPost = async (input) => {
+  return connection.promise().query(`
+  BEGIN;
+  INSERT INTO reviews (product_id, rating, date, summary, body, recommended, name, email)
+  VALUES (${input.product_id}, ${input.rating}, CURRENT_TIMESTAMP(), '${input.summary}', '${input.body}', ${input.recommend}, '${input.name}', '${input.email}')
+  INSERT INTO photos (review_id, url)
+  VALUES (LAST_INSERT_ID(), '');
+  COMMIT;
+
+  `)
+}
+
+
+
 
 module.exports = {
 reviewID,
-meta
+meta,
+revPost
 }
